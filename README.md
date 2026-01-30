@@ -1,10 +1,10 @@
 # 📌 Table of Contents
 
-- [General Introduction](#general-introduction)
-- [Repository Structure](#repository-structure)
-- [Requirements](#requirements)
-- [Docker Environment](#docker-environment)
-- [Usage](#usage)
+- [General Introduction](#-general-introduction)
+- [Repository Structure](#-repository-structure)
+- [Requirements](#-requirements)
+- [Docker Environment](#-docker-environment)
+- [Usage](#-usage)
 
 # 📖 General Introduction
 
@@ -83,4 +83,4 @@ To execute the automated code issue mitigation:
 To generate the metrics (unresolved issues, errors, etc.) reported in the paper:
 
 - Run the evaluation class: `magic/experiment/Evaluation.java`.
-- This script outputs the results of Magic and stored them in `data/`.
+- This script outputs the results of Magic and stores them in `data/`.
