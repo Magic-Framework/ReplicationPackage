@@ -1,0 +1,388 @@
+[ {
+  "ID" : "E741",
+  "RuleName" : "Do not use variables named 'I', 'O', or 'l'",
+  "Description" : "Variables named I, O, and l can be very hard to read. This is because the letter I and the letter l are easily confused, and the letter O and the number 0 can be easily confused.\nChange the names of these variables to something more descriptive.",
+  "RefactoringType" : "Rename Variable",
+  "CodeBefore" : "O = 100.0\r\ntotal = O * 1.08",
+  "CodeAfter" : "order = 100.0\ntotal = order * 1.08",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "F841",
+  "RuleName" : "Local variable name is assigned to but never used",
+  "Description" : "A local variable in your function was defined but is not being used. This local variable should be removed.",
+  "RefactoringType" : "Remove Unused Variable",
+  "CodeBefore" : "def full_name(self):\r\n    # name is defined but not used\r\n    name = self.first_name + ' ' + self.last_name\r\n    return self.first_name",
+  "CodeAfter" : "def full_name(self):\n    return self.first_name",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "C0200",
+  "RuleName" : "consider-using-enumerate",
+  "Description" : "Emitted when code that iterates with range and len is encountered. Such code can be simplified by using the enumerate builtin.",
+  "RefactoringType" : "Replace Loop with Built-in Function",
+  "CodeBefore" : "seasons = [\"Spring\", \"Summer\", \"Fall\", \"Winter\"]\r\n\r\nfor i in range(len(seasons)):  # [consider-using-enumerate]\r\n    print(i, seasons[i])\r\n",
+  "CodeAfter" : "seasons = [\"Spring\", \"Summer\", \"Fall\", \"Winter\"]\n\nfor i, season in enumerate(seasons):\n    print(i, season)",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R1731",
+  "RuleName" : "consider-using-max-builtin",
+  "Description" : "Using the max builtin instead of a conditional improves readability and conciseness.",
+  "RefactoringType" : "Replace Conditional with Built-in Function",
+  "CodeBefore" : "def get_max(value1, value2):\r\n    if value1 < value2:  # [consider-using-max-builtin]\r\n        value1 = value2\r\n    return value1\r\n\r\n\r\nprint(get_max(1, 2))\r\n",
+  "CodeAfter" : "print(max(1, 2))",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R1705",
+  "RuleName" : "no-else-return",
+  "Description" : "Used in order to highlight an unnecessary block of code following an if containing a return statement. As such, it will warn when it encounters an else following a chain of ifs, all of them containing a return statement.",
+  "RefactoringType" : "Replace Nested Conditional with Guard Clauses",
+  "CodeBefore" : "def compare_numbers(a: int, b: int) -> int:\r\n    if a == b:  # [no-else-return]\r\n        return 0\r\n    elif a < b:\r\n        return -1\r\n    else:\r\n        return 1\r\n",
+  "CodeAfter" : "def compare_numbers(a: int, b: int) -> int:\n    if a == b:\n        return 0\n    if a < b:\n        return -1\n    return 1",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "W0612",
+  "RuleName" : "unused-variable",
+  "Description" : "Used when a variable is defined but not used.",
+  "RefactoringType" : "Remove Unused Variable",
+  "CodeBefore" : "def print_fruits():\r\n    fruit1 = \"orange\"\r\n    fruit2 = \"apple\"  # [unused-variable]\r\n    print(fruit1)\r\n",
+  "CodeAfter" : "def print_fruits():\n    fruit1 = \"orange\"\n    print(fruit1)",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "R1713",
+  "RuleName" : "consider-using-join",
+  "Description" : "Using str.join(sequence) is faster, uses less memory and increases readability compared to for-loop iteration.",
+  "RefactoringType" : "Replace Loop with Pipeline",
+  "CodeBefore" : "def fruits_to_string(fruits):\r\n    formatted_fruit = \"\"\r\n    for fruit in fruits:\r\n        formatted_fruit += fruit  # [consider-using-join]\r\n    return formatted_fruit\r\n\r\n\r\nprint(fruits_to_string([\"apple\", \"pear\", \"peach\"]))\r\n",
+  "CodeAfter" : "def fruits_to_string(fruits):\n    return ''.join(fruits)\n\nprint(fruits_to_string([\"apple\", \"pear\", \"peach\"]))",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "R1728",
+  "RuleName" : "consider-using-generator",
+  "Description" : "If your container can be large using a generator will bring better performance.",
+  "RefactoringType" : "Replace List Comprehension with Generator Expression",
+  "CodeBefore" : "list([0 for y in list(range(10))])  # [consider-using-generator]\r\ntuple([0 for y in list(range(10))])  # [consider-using-generator]\r\nsum([y**2 for y in list(range(10))])  # [consider-using-generator]\r\nmax([y**2 for y in list(range(10))])  # [consider-using-generator]\r\nmin([y**2 for y in list(range(10))])  # [consider-using-generator]\r\n",
+  "CodeAfter" : "list(0 for y in list(range(10)))\ntuple(0 for y in list(range(10)))\nsum(y**2 for y in list(range(10)))\nmax(y**2 for y in list(range(10)))\nmin(y**2 for y in list(range(10)))",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R1714",
+  "RuleName" : "consider-using-in",
+  "Description" : "To check if a variable is equal to one of many values, combine the values into a set or tuple and check if the variable is contained \"in\" it instead of checking for equality against each of the values. This is faster and less verbose.",
+  "RefactoringType" : "Replace Implicit Conditionals with Set Membership",
+  "CodeBefore" : "def fruit_is_round(fruit):\r\n    # +1: [consider-using-in]\r\n    return fruit == \"apple\" or fruit == \"orange\" or fruit == \"melon\"\r\n",
+  "CodeAfter" : "def fruit_is_round(fruit):\n    return fruit in {\"apple\", \"orange\", \"melon\"}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R1716",
+  "RuleName" : "chained-comparison",
+  "Description" : "This message is emitted when pylint encounters boolean operation like \"a < b and b < c\", suggesting instead to refactor it to \"a < b < c\"",
+  "RefactoringType" : "Replace Boolean Expression with Chained Comparison",
+  "CodeBefore" : "a = int(input())\r\nb = int(input())\r\nc = int(input())\r\nif a < b and b < c:  # [chained-comparison]\r\n    pass\r\n",
+  "CodeAfter" : "a = int(input())\nb = int(input())\nc = int(input())\nif a < b < c:\n    pass",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R0912",
+  "RuleName" : "too-many-branches",
+  "Description" : "Used when a function or method has too many branches, making it hard to follow.",
+  "RefactoringType" : "Replace Conditional with Lookup Table",
+  "CodeBefore" : "def num_to_word(x):  # [too-many-branches]\r\n    if x == 0:\r\n        return \"zero\"\r\n    elif x == 1:\r\n        return \"one\"\r\n    elif x == 2:\r\n        return \"two\"\r\n    elif x == 3:\r\n        return \"three\"\r\n    elif x == 4:\r\n        return \"four\"\r\n    elif x == 5:\r\n        return \"five\"\r\n    elif x == 6:\r\n        return \"six\"\r\n    elif x == 7:\r\n        return \"seven\"\r\n    elif x == 8:\r\n        return \"eight\"\r\n    elif x == 9:\r\n        return \"nine\"\r\n    elif x == 10:\r\n        return \"ten\"\r\n    elif x == 11:\r\n        return \"eleven\"\r\n    else:\r\n        return None\r\n",
+  "CodeAfter" : "def num_to_word(x):\n    return {\n        0: \"zero\",\n        1: \"one\",\n        2: \"two\",\n        3: \"three\",\n        4: \"four\",\n        5: \"five\",\n        6: \"six\",\n        7: \"seven\",\n        8: \"eight\",\n        9: \"nine\",\n        10: \"ten\",\n        11: \"eleven\",\n    }.get(x)",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "W0622",
+  "RuleName" : "redefined-builtin",
+  "Description" : "Used when a variable or function override a built-in.",
+  "RefactoringType" : "Rename Method/Function",
+  "CodeBefore" : "def map():  # [redefined-builtin]\r\n    pass\r\n",
+  "CodeAfter" : "def my_map():\n    pass",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "R1730",
+  "RuleName" : "consider-using-min-builtin",
+  "Description" : "Using the min builtin instead of a conditional improves readability and conciseness.",
+  "RefactoringType" : "Replace Conditional with Builtin Function",
+  "CodeBefore" : "def get_min(value1, value2):\r\n    if value1 > value2:  # [consider-using-min-builtin]\r\n        value1 = value2\r\n    return value1\r\n\r\n\r\nprint(get_min(1, 2))\r\n",
+  "CodeAfter" : "def get_min(value1, value2):\n    return min(value1, value2)\n\n\nprint(get_min(1, 2))",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "W0105",
+  "RuleName" : "pointless-string-statement",
+  "Description" : "Used when a string is used as a statement (which of course has no effect). This is a particular case of W0104 with its own message so you can easily disable it if you're using those strings as documentation, instead of comments.",
+  "RefactoringType" : "Replace Statement with Comment",
+  "CodeBefore" : "\"\"\"This is a docstring which describes the module\"\"\"\r\n\r\n\"\"\"This is not a docstring\"\"\"  # [pointless-string-statement]\r\n",
+  "CodeAfter" : "\"\"\"This is a docstring which describes the module\"\"\"\n\n# This is comment which describes a particular part of the module.",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R0911",
+  "RuleName" : "too-many-return-statements",
+  "Description" : "Used when a function or method has too many return statement, making it hard to follow.",
+  "RefactoringType" : "Replace Conditional with Lookup Table",
+  "CodeBefore" : "def to_string(x):  # [too-many-return-statements]\r\n    # max of 6 by default, can be configured\r\n    if x == 1:\r\n        return \"This is one.\"\r\n    if x == 2:\r\n        return \"This is two.\"\r\n    if x == 3:\r\n        return \"This is three.\"\r\n    if x == 4:\r\n        return \"This is four.\"\r\n    if x == 5:\r\n        return \"This is five.\"\r\n    if x == 6:\r\n        return \"This is six.\"\r\n    if x == 7:\r\n        return \"This is seven.\"\r\n",
+  "CodeAfter" : "def to_string(x):\n    numbers_to_strings = {\n        1: \"one\",\n        2: \"two\",\n        3: \"three\",\n        4: \"four\",\n        5: \"five\",\n        6: \"six\",\n        7: \"seven\",\n    }\n    if x in numbers_to_strings:\n        return f\"This is {numbers_to_strings[x]}.\"\n    return None",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "R0914",
+  "RuleName" : "too-many-locals",
+  "Description" : "Used when a function or method has too many local variables.",
+  "RefactoringType" : "Extract Method and Introduce Parameter Object",
+  "CodeBefore" : "from childhood import Child, Sweet\r\n\r\n\r\ndef handle_sweets(infos):  # [too-many-locals]\r\n    # Create children\r\n    children = [Child(info) for info in infos]\r\n    number_of_sweets = 87\r\n    sweets = [Sweet() * number_of_sweets]\r\n    number_of_sweet_per_child = 5\r\n    money = 45.0\r\n    sweets_given = 0\r\n    time_to_eat_sweet = 54\r\n    price_of_sweet = 0.42\r\n    # distribute sweet\r\n    for child in children:\r\n        sweets_given += number_of_sweet_per_child\r\n        child.give(sweets[number_of_sweet_per_child:])\r\n    # calculate prices\r\n    cost = sweets_given * price_of_sweet\r\n    cost_of_children = cost\r\n    # Calculate remaining money\r\n    remaining = money - cost_of_children\r\n    remaining_money = remaining\r\n    # Calculate time it took\r\n    time_it_took_assuming = time_to_eat_sweet * number_of_sweet_per_child\r\n    time_it_took_assuming_parallel_eating = (\r\n        time_it_took_assuming\r\n    )\r\n    print(\r\n        f\"{children} ate {cost_of_children}¤ of sweets in {time_it_took_assuming_parallel_eating}, \"\r\n        f\"you still have {remaining_money}\"\r\n    )\r\n",
+  "CodeAfter" : "from childhood import Child, Sweet\n\n\ndef handle_sweets(infos):\n    children = [Child(info) for info in infos]\n    number_of_sweets = 87\n    number_of_sweet_per_child = 5\n    money = 45.0\n    price_of_sweet = 0.42\n    time_to_eat_sweet = 54\n    \n    sweets = [Sweet() for _ in range(number_of_sweets)]\n    sweets_given = 0\n    \n    # distribute sweets\n    for child in children:\n        if sweets_given + number_of_sweet_per_child <= number_of_sweets:\n            child.give(sweets[sweets_given:sweets_given + number_of_sweet_per_child])\n            sweets_given += number_of_sweet_per_child\n    \n    # calculate financial impact\n    cost = sweets_given * price_of_sweet\n    remaining_money = money - cost\n    \n    # calculate time (assuming parallel eating)\n    time_it_took = time_to_eat_sweet * number_of_sweet_per_child\n    \n    print(\n        f\"{children} ate {cost}¤ of sweets in {time_it_took}, \"\n        f\"you still have {remaining_money}\"\n    )",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "C0325",
+  "RuleName" : "superfluous-parens",
+  "Description" : "Used when a single item in parentheses follows an if, for, or other keyword.",
+  "RefactoringType" : "Remove Redundant Parentheses",
+  "CodeBefore" : "x = input()\r\ny = input()\r\nif (x == y):  # [superfluous-parens]\r\n    pass\r\n",
+  "CodeAfter" : "x = input()\ny = input()\nif x == y:\n    pass",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R1703",
+  "RuleName" : "simplifiable-if-statement",
+  "Description" : "Used when an if statement can be replaced with 'bool(test)'.",
+  "RefactoringType" : "Replace Conditional with Assignment",
+  "CodeBefore" : "FLYING_THINGS = [\"bird\", \"plane\", \"superman\", \"this example\"]\r\n\r\n\r\ndef is_flying_animal(an_object):\r\n    # +1: [simplifiable-if-statement]\r\n    if isinstance(an_object, Animal) and an_object in FLYING_THINGS:\r\n        is_flying = True\r\n    else:\r\n        is_flying = False\r\n    return is_flying\r\n",
+  "CodeAfter" : "def is_flying_animal(an_object):\n    is_flying = isinstance(an_object, Animal) and an_object in FLYING_THINGS\n    return is_flying",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "C0123",
+  "RuleName" : "unidiomatic-typecheck",
+  "Description" : "The idiomatic way to perform an explicit typecheck in Python is to use isinstance(x, Y) rather than type(x) == Y, type(x) is Y. Though there are unusual situations where these give different results.",
+  "RefactoringType" : "Replace Type Check with Instance Check",
+  "CodeBefore" : "test_score = {\"Biology\": 95, \"History\": 80}\r\nif type(test_score) is dict:  # [unidiomatic-typecheck]\r\n    pass\r\n",
+  "CodeAfter" : "test_score = {\"Biology\": 95, \"History\": 80}\nif isinstance(test_score, dict):\n    pass",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "W0123",
+  "RuleName" : "eval-used",
+  "Description" : "Used when you use the \"eval\" function, to discourage its usage. Consider using `ast.literal_eval` for safely evaluating strings containing Python expressions from untrusted sources.",
+  "RefactoringType" : "Replace Function with Safe Alternative",
+  "CodeBefore" : "eval(\"[1, 2, 3]\")  # [eval-used]\r\n",
+  "CodeAfter" : "from ast import literal_eval\n\nliteral_eval(\"[1, 2, 3]\")",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "E128",
+  "RuleName" : "Continuation line under-indented for visual indent",
+  "Description" : "A continuation line is under-indented for a visual indentation.",
+  "RefactoringType" : "Reformatting/Whitespace Adjustment",
+  "CodeBefore" : "print(\"Python\", (\"Hello\",\r\n               \"World\"))",
+  "CodeAfter" : "print(\"Python\", (\"Hello\",\r\n                 \"World\"))",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "E306",
+  "RuleName" : "Expected 1 blank line before a nested definition",
+  "Description" : "Nested functions should contain 1 blank line between their definitions.",
+  "RefactoringType" : "Formatting Refactoring",
+  "CodeBefore" : "def outer():\r\n    def inner():\r\n        pass",
+  "CodeAfter" : "def outer():\r\n\r\n    def inner():\r\n        pass",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "W1203",
+  "RuleName" : "logging-fstring-interpolation",
+  "Description" : "Used when a logging statement has a call form of \"logging.<logging method>(f\"...\")\".Use another type of string formatting instead. You can use % formatting but leave interpolation to the logging function by passing the parameters as arguments. If logging-format-interpolation is disabled then you can use str.format. If logging-not-lazy is disabled then you can use % formatting as normal.",
+  "RefactoringType" : "Parameterize Method",
+  "CodeBefore" : "import logging\r\nimport sys\r\n\r\nlogging.error(f\"Python version: {sys.version}\")  # [logging-fstring-interpolation]\r\n",
+  "CodeAfter" : "import logging\r\nimport sys\r\n\r\nlogging.error(\"Python version: %s\", sys.version)\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "W0718",
+  "RuleName" : "broad-exception-caught",
+  "Description" : "If you use a naked ``except Exception:`` clause, you might end up catching exceptions other than the ones you expect to catch. This can hide bugs or make it harder to debug programs when unrelated errors are hidden.",
+  "RefactoringType" : "Specialize Exception Handling",
+  "CodeBefore" : "try:\r\n    import platform_specific_module\r\nexcept Exception:  # [broad-exception-caught]\r\n    platform_specific_module = None\r\n",
+  "CodeAfter" : "try:\r\n    import platform_specific_module\r\nexcept ImportError:\r\n    platform_specific_module = None\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R0915",
+  "RuleName" : "too-many-statements",
+  "Description" : "Used when a function or method has too many statements. You should then split it in smaller functions / methods.",
+  "RefactoringType" : "Extract Method",
+  "CodeBefore" : "import random\r\n\r\n\r\ndef distribute_candies(  # [too-many-statements]\r\n    children: list[Child], candies_per_child: int\r\n):\r\n    # This function is a masterpiece of code that embodies the epitome of efficiency\r\n    # it's also an essential part of a high-priority project with extremely tight deadlines\r\n    # and there is absolutely no time to refactor it to make it more concise.\r\n    # The lead developer on the project, who has decades of experience,\r\n    # has personally reviewed this implementation and deemed it good enough as it is.\r\n    # The person writing this code has a demanding job and multiple responsibilities,\r\n    # and simply does not have the luxury of spending time making this code more readable.\r\n    total_candies = len(children) * candies_per_child\r\n    eaten_candies = 0\r\n    # Counting candies given to each child\r\n    for child in children:\r\n        # If a child eat more than 1 candies they're going to eat all\r\n        # the candies for sure\r\n        eaten_for_child = random.choices([0, 1, candies_per_child])\r\n        print(\r\n            f\"Child {child} gets {candies_per_child} candies and eat {eaten_for_child}\"\r\n        )\r\n        remaining_candies_for_children = child.eat_candies(eaten_for_child)\r\n        if remaining_candies_for_children == 0:\r\n            print(f\"All the candies have been devoured by {child.name}!\")\r\n        else:\r\n            print(\r\n                f\"{child.name} still have {remaining_candies_for_children} candies left.\"\r\n            )\r\n        eaten_candies += eaten_for_child\r\n    return eaten_candies, total_candies\r\n",
+  "CodeAfter" : "import random\r\n\r\n\r\ndef distribute_candies(children: list[Child], candies_per_child: int):\r\n    total_candies = len(children) * candies_per_child\r\n    eaten_candies = 0\r\n    for child in children:\r\n        eaten_candies += _distribute_candies_to_child(candies_per_child, child)\r\n    return eaten_candies, total_candies\r\n\r\n\r\ndef _distribute_candies_to_child(candies_per_child: int, child: Child):\r\n    # If a child eat more than 1 candies they're going to eat all\r\n    # the candies for sure\r\n    eaten_for_child = random.choices([0, 1, candies_per_child])\r\n    print(f\"Child {child} gets {candies_per_child} candies and eat {eaten_for_child}\")\r\n    remaining_candies_for_children = child.eat_candies(eaten_for_child)\r\n    if remaining_candies_for_children == 0:\r\n        print(f\"All the candies have been devoured by {child.name}!\")\r\n    else:\r\n        print(f\"{child.name} still have {remaining_candies_for_children} candies left.\")\r\n    return eaten_for_child\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "E0102",
+  "RuleName" : "function-redefined",
+  "Description" : "Used when a function / class / method is redefined.",
+  "RefactoringType" : "Remove Duplicate Code",
+  "CodeBefore" : "def get_email():\r\n    pass\r\n\r\n\r\ndef get_email():  # [function-redefined]\r\n    pass\r\n",
+  "CodeAfter" : "def get_email():\r\n    pass\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "W1510",
+  "RuleName" : "subprocess-run-check",
+  "Description" : "The ``check`` keyword  is set to False by default. It means the process launched by ``subprocess.run`` can exit with a non-zero exit code and fail silently. It's better to set it explicitly to make clear what the error-handling behavior is.",
+  "RefactoringType" : "Add Parameter",
+  "CodeBefore" : "import subprocess\r\n\r\nproc = subprocess.run([\"ls\"])  # [subprocess-run-check]\r\n",
+  "CodeAfter" : "import subprocess\r\n\r\nproc = subprocess.run([\"ls\"], check=False)\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "W1514",
+  "RuleName" : "unspecified-encoding",
+  "Description" : "It is better to specify an encoding when opening documents. Using the system default implicitly can create problems on other operating systems. See https://peps.python.org/pep-0597/",
+  "RefactoringType" : "Parameterize Method",
+  "CodeBefore" : "def foo(file_path):\r\n    with open(file_path) as file:  # [unspecified-encoding]\r\n        contents = file.read()\r\n",
+  "CodeAfter" : "def foo(file_path):\n    with open(file_path, encoding='utf-8') as file:\n        contents = file.read()",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "C0209",
+  "RuleName" : "consider-using-f-string",
+  "Description" : "Used when we detect a string that is being formatted with format() or % which could potentially be an f-string. The use of f-strings is preferred. Requires Python 3.6 and ``py-version >= 3.6``.",
+  "RefactoringType" : "Replace String Formatting with F-String",
+  "CodeBefore" : "from string import Template\r\n\r\nmenu = (\"eggs\", \"spam\", 42.4)\r\n\r\nold_order = \"%s and %s: %.2f ¤\" % menu  # [consider-using-f-string]\r\nbeginner_order = menu[0] + \" and \" + menu[1] + \": \" + str(menu[2]) + \" ¤\"\r\njoined_order = \" and \".join(menu[:2])\r\n# +1: [consider-using-f-string]\r\nformat_order = \"{} and {}: {:0.2f} ¤\".format(menu[0], menu[1], menu[2])\r\n# +1: [consider-using-f-string]\r\nnamed_format_order = \"{eggs} and {spam}: {price:0.2f} ¤\".format(\r\n    eggs=menu[0], spam=menu[1], price=menu[2]\r\n)\r\ntemplate_order = Template(\"$eggs and $spam: $price ¤\").substitute(\r\n    eggs=menu[0], spam=menu[1], price=menu[2]\r\n)\r\n",
+  "CodeAfter" : "menu = (\"eggs\", \"spam\", 42.4)\r\n\r\nf_string_order = f\"{menu[0]} and {menu[1]}: {menu[2]:0.2f} ¤\"\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R1720",
+  "RuleName" : "no-else-raise",
+  "Description" : "Used in order to highlight an unnecessary block of code following an if containing a raise statement. As such, it will warn when it encounters an else following a chain of ifs, all of them containing a raise statement.",
+  "RefactoringType" : "Remove Control Flag / Redundant Else",
+  "CodeBefore" : "def integer_sum(a: int, b: int) -> int:\r\n    if not (isinstance(a, int) and isinstance(b, int)):  # [no-else-raise]\r\n        raise ValueError(\"Function supports only integer parameters.\")\r\n    else:\r\n        return a + b\r\n",
+  "CodeAfter" : "def integer_sum(a: int, b: int) -> int:\r\n    if not (isinstance(a, int) and isinstance(b, int)):\r\n        raise ValueError(\"Function supports only integer parameters.\")\r\n    return a + b\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "R1724",
+  "RuleName" : "no-else-continue",
+  "Description" : "Used in order to highlight an unnecessary block of code following an if containing a continue statement. As such, it will warn when it encounters an else following a chain of ifs, all of them containing a continue statement.",
+  "RefactoringType" : "Remove Redundant Control Flow",
+  "CodeBefore" : "def even_number_under(n: int):\r\n    for i in range(n):\r\n        if i % 2 == 1:  # [no-else-continue]\r\n            continue\r\n        else:\r\n            yield i\r\n",
+  "CodeAfter" : "def even_number_under(n: int):\r\n    for i in range(n):\r\n        if i % 2 == 1:\r\n            continue\r\n        yield i\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "C2801",
+  "RuleName" : "unnecessary-dunder-call",
+  "Description" : "Used when a dunder method is manually called instead of using the corresponding function/method/operator.",
+  "RefactoringType" : "Replace Explicit Method Call with Operator",
+  "CodeBefore" : "three = (3.0).__str__()  # [unnecessary-dunder-call]\r\ntwelve = \"1\".__add__(\"2\")  # [unnecessary-dunder-call]\r\n\r\n\r\ndef is_bigger_than_two(x):\r\n    return x.__gt__(2)  # [unnecessary-dunder-call]\r\n",
+  "CodeAfter" : "three = str(3.0)\r\ntwelve = \"1\" + \"2\"\r\n\r\n\r\ndef is_bigger_than_two(x):\r\n    return x > 2\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "E0401",
+  "RuleName" : "import-error",
+  "Description" : "Used when pylint has been unable to import a module.",
+  "RefactoringType" : "Rename",
+  "CodeBefore" : "from patlib import Path  # [import-error]\r\n",
+  "CodeAfter" : "from pathlib import Path\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "E1120",
+  "RuleName" : "no-value-for-parameter",
+  "Description" : "Used when a function call passes too few arguments.",
+  "RefactoringType" : "Parameter Argument Alignment",
+  "CodeBefore" : "def add(x, y):\r\n    return x + y\r\n\r\n\r\nadd(1)  # [no-value-for-parameter]\r\n",
+  "CodeAfter" : "def add(x, y):\r\n    return x + y\r\n\r\n\r\nadd(1, 2)\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "W0104",
+  "RuleName" : "pointless-statement",
+  "Description" : "Used when a statement doesn't have (or at least seems to) any effect.",
+  "RefactoringType" : "Remove Dead Code",
+  "CodeBefore" : "[1, 2, 3]  # [pointless-statement]\r\n",
+  "CodeAfter" : "",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "E1102",
+  "RuleName" : "not-callable",
+  "Description" : "Used when an object being called has been inferred to a non callable object.",
+  "RefactoringType" : "Remove Method Call",
+  "CodeBefore" : "NUMBER = 42\r\nprint(NUMBER())  # [not-callable]\r\n",
+  "CodeAfter" : "NUMBER = 42\nprint(NUMBER)",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "W0707",
+  "RuleName" : "raise-missing-from",
+  "Description" : "Python's exception chaining shows the traceback of the current exception, but also of the original exception. When you raise a new exception after another exception was caught it's likely that the second exception is a friendly re-wrapping of the first exception. In such cases `raise from` provides a better link between the two tracebacks in the final error.",
+  "RefactoringType" : "Exception Chaining",
+  "CodeBefore" : "try:\r\n    1 / 0\r\nexcept ZeroDivisionError as e:\r\n    raise ValueError(\"Rectangle Area cannot be zero\")  # [raise-missing-from]\r\n",
+  "CodeAfter" : "try:\r\n    1 / 0\r\nexcept ZeroDivisionError as e:\r\n    raise ValueError(\"Rectangle Area cannot be zero\") from e\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "E1121",
+  "RuleName" : "too-many-function-args",
+  "Description" : "Used when a function call passes too many positional arguments.",
+  "RefactoringType" : "Remove Parameter",
+  "CodeBefore" : "class Fruit:\r\n    def __init__(self, color):\r\n        self.color = color\r\n\r\n\r\napple = Fruit(\"red\", \"apple\", [1, 2, 3])  # [too-many-function-args]\r\n",
+  "CodeAfter" : "class Fruit:\n    def __init__(self, color):\n        self.color = color\n\n\napple = Fruit(\"red\")",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "C0201",
+  "RuleName" : "consider-iterating-dictionary",
+  "Description" : "Emitted when the keys of a dictionary are iterated through the ``.keys()`` method or when ``.keys()`` is used for a membership check. It is enough to iterate through the dictionary itself, ``for key in dictionary``. For membership checks, ``if key in dictionary`` is faster.",
+  "RefactoringType" : "Replace Method with Direct Access",
+  "CodeBefore" : "FRUITS = {\"apple\": 1, \"pear\": 5, \"peach\": 10}\r\n\r\n\r\nfor fruit in FRUITS.keys():  # [consider-iterating-dictionary]\r\n    print(fruit)\r\n",
+  "CodeAfter" : "FRUITS = {\"apple\": 1, \"pear\": 5, \"peach\": 10}\r\n\r\n\r\nfor fruit in FRUITS:\r\n    print(fruit)\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "W0613",
+  "RuleName" : "unused-argument",
+  "Description" : "Used when a function or method argument is not used.",
+  "RefactoringType" : "Bug Fix",
+  "CodeBefore" : "def print_point(x, y):  # [unused-argument]\r\n    print(f\"Point is located at {x},{x}\")\r\n",
+  "CodeAfter" : "def print_point(x, y):\n    print(f\"Point is located at {x},{y}\")",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "ID" : "W0642",
+  "RuleName" : "self-cls-assignment",
+  "Description" : "Invalid assignment to self or cls in instance or class method respectively.",
+  "RefactoringType" : "Variable Renaming",
+  "CodeBefore" : "class Fruit:\r\n    @classmethod\r\n    def list_fruits(cls):\r\n        cls = \"apple\"  # [self-cls-assignment]\r\n\r\n    def print_color(self, *colors):\r\n        self = \"red\"  # [self-cls-assignment]\r\n        color = colors[1]\r\n        print(color)\r\n",
+  "CodeAfter" : "class Fruit:\r\n    @classmethod\r\n    def list_fruits(cls):\r\n        fruit = \"apple\"\r\n        print(fruit)\r\n\r\n    def print_color(self, *colors):\r\n        color = colors[1]\r\n        print(color)\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "E301",
+  "RuleName" : "Expected 1 blank line, found 0",
+  "Description" : "One blank line is expected between the methods of a class.",
+  "RefactoringType" : "Formatting",
+  "CodeBefore" : "class MyClass(object):\r\n    def func1():\r\n        pass\r\n    def func2():\r\n        pass",
+  "CodeAfter" : "class MyClass(object):\r\n    def func1():\r\n        pass\r\n\r\n    def func2():\r\n        pass",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "ID" : "E0213",
+  "RuleName" : "no-self-argument",
+  "Description" : "Used when a method has an attribute different the \"self\" as first argument. This is considered as an error since this is a so common convention that you shouldn't break it!",
+  "RefactoringType" : "Rename Parameter",
+  "CodeBefore" : "class Fruit:\r\n    def __init__(this, name):  # [no-self-argument]\r\n        this.name = name\r\n",
+  "CodeAfter" : "class Fruit:\r\n    def __init__(self, name):\r\n        self.name = name\r\n",
+  "IsCorrect" : true,
+  "IsResolved" : true
+} ]

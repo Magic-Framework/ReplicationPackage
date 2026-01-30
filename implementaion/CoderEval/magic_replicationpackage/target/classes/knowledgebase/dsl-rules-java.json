@@ -1,0 +1,409 @@
+[ {
+  "RuleName" : "MultipleVariableDeclarations",
+  "Description" : "Checks that each variable declaration is in its own statement and on its own line.",
+  "RefactoringType" : "Split Variable Declaration",
+  "CodeBefore" : "class Test {\n    int n = 0, m = 0;\n    int o = 0, p;\n    int s, t = 0;\n\n    public void method() {\n        for (int i = 0, j = 0; ; ) ;\n    }\n}",
+  "CodeAfter" : "class Test {\n    int n = 0;\n    int m = 0;\n    int o = 0;\n    int p;\n    int s;\n    int t = 0;\n\n    public void method() {\n        for (int i = 0, j = 0; ; ) ;\n    }\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "RuleName" : "MissingSwitchDefault",
+  "Description" : "Checks that switch statement has a `default` clause.",
+  "RefactoringType" : "Add Default Clause",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        int x = 2;\n        switch (x) {\n            case 2: int y=8;\n        }\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void bar() {\n        int x = 2;\n        switch (x) {\n            case 2: int y=8;\n            default: int j=8;\n        }\n    }\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "RuleName" : "VisibilityModifier",
+  "Description" : "Checks visibility of class members. Only static final, immutable or annotated by specified annotation members may be public; other class members must be private unless the property `protectedAllowed` or `packageAllowed` is set.",
+  "RefactoringType" : "Change Variable Visibility",
+  "CodeBefore" : "class Example {\n    private int myPrivateField1;\n    int field1;\n}",
+  "CodeAfter" : "class Example {\n    private int myPrivateField1;\n    private int field1;\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "HiddenField",
+  "Description" : "Checks that a local variable or a parameter does not shadow a field that is defined in the same class.",
+  "RefactoringType" : "Rename Parameter",
+  "CodeBefore" : "public class A {\n    private String field;\n\n    public A(String field) {\n    }\n}",
+  "CodeAfter" : "public class A {\n    private String field;\n\n    public A(String field1) {\n    }\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "RuleName" : "EmptyBlock",
+  "Description" : "Checks for empty blocks.",
+  "RefactoringType" : "Remove Dead Code",
+  "CodeBefore" : "public class A {\n    {\n        int i = 0;\n        switch(i) {\n        }\n    }\n}",
+  "CodeAfter" : "public class A {\n    {\n        int i = 0;\n    }\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "RuleName" : "PrematureDeclaration",
+  "Description" : "Checks for variables that are defined before they might be used. A declaration is deemed to be premature if there are some statements that may return or throw an exception between the time the variable is declared and the time it is first read.",
+  "RefactoringType" : "Move Declaration Closer to Usage",
+  "CodeBefore" : "public class PrematureDeclaration {\n\n    public String doSomeThing(String uri, String cachedPath, int times) {\n        var prior = \"\";\n\n        // isn't a side-effect as those look like a getter\n        if (System.getProperties().isEmpty()) {\n            return \"\";\n        }\n\n        return uri + prior;\n    }\n}",
+  "CodeAfter" : "public class PrematureDeclaration {\n\n    public String doSomeThing(String uri, String cachedPath, int times) {\n        // isn't a side-effect as those look like a getter\n        if (System.getProperties().isEmpty()) {\n            return \"\";\n        }\n\n        var prior = \"\";\n        return uri + prior;\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "ConfusingTernary",
+  "Description" : "Avoid negation within an \"if\" expression with an \"else\" clause. For example, rephrase: `if (x != y) diff(); else same();` as: `if (x == y) same(); else diff();`.",
+  "RefactoringType" : "Conditional Logic Inversion",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        x = a != b ? c : d;\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void bar() {\n        x = a == b ? d : c;\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "AppendCharacterWithChar",
+  "Description" : "Avoid concatenating characters as strings in StringBuffer/StringBuilder.append methods.",
+  "RefactoringType" : "Replace Parameter with Primitive Type",
+  "CodeBefore" : "public class Foo {\n    public void bar(StringBuffer sb) {\n        sb.append(\"a\");\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public void bar(StringBuffer sb) {\n        sb.append('a');\n    }\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UseLocaleWithCaseConversions",
+  "Description" : "When doing `String::toLowerCase()/toUpperCase()` conversions, use an explicit locale argument to specify the case transformation rules.",
+  "RefactoringType" : "Parameterize Method",
+  "CodeBefore" : "public class Foo {\n    public void run(String y) {\n        String x = y.toLowerCase();\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public void run(String y) {\n        String x = y.toLowerCase(Locale.ROOT);\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "LiteralsFirstInComparisons",
+  "Description" : "Position literals first in all String comparisons, if the second argument is null then NullPointerExceptions can be avoided, they will just return false. Note that switching literal positions for compareTo and compareToIgnoreCase may change the result, see examples.",
+  "RefactoringType" : "Safe Comparison Refactoring",
+  "CodeBefore" : "public class Foo {\n    boolean bar(String x) {\n        return x.equals(\"2\");\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    boolean bar(String x) {\n        return \"2\".equals(x);\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UseConcurrentHashMap",
+  "Description" : "Since Java5 brought a new implementation of the Map designed for multi-threaded access, you can perform efficient map reads without blocking other threads.",
+  "RefactoringType" : "Replace Data Structure",
+  "CodeBefore" : "import java.util.*;\nimport java.util.concurrent.*;\npublic class ConcurrentApp {\n    public void getMyInstance() {\n        Map map1 = new HashMap();   // fine for single-threaded access --- violation on this line\n        Map map2 = new ConcurrentHashMap();  // preferred for use with multiple threads\n    }\n}",
+  "CodeAfter" : "import java.util.*;\nimport java.util.concurrent.*;\npublic class ConcurrentApp {\n    public void getMyInstance() {\n        Map map1 = new ConcurrentHashMap();   // changed from HashMap to ConcurrentHashMap\n        Map map2 = new ConcurrentHashMap();  // preferred for use with multiple threads\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "AvoidReassigningParameters",
+  "Description" : "Reassigning values to incoming parameters of a method or constructor is not recommended, as this can make the code more difficult to understand. The code is often read with the assumption that parameter values don't change and an assignment violates therefore the principle of least astonishment. This is especially a problem if the parameter is documented e.g. in the method's javadoc and the new content differs from the original documented content.",
+  "RefactoringType" : "Remove Assignment to Parameters",
+  "CodeBefore" : "public class Foo {\n    void foo(int bar) {\n        bar = 2;\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void foo(int bar) {}\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UselessParentheses",
+  "Description" : "Parenthesized expressions are used to override the default operator precedence rules. Parentheses whose removal would not change the relative nesting of operators are unnecessary, because they don't change the semantics of the enclosing expression.",
+  "RefactoringType" : "Remove Redundant Parentheses",
+  "CodeBefore" : "public class Foo {\n    public int bar() {\n        return (0);\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public int bar() {\n        return 0;\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UnnecessaryLocalBeforeReturn",
+  "Description" : "Avoid the creation of unnecessary local variables",
+  "RefactoringType" : "Inline Variable",
+  "CodeBefore" : "public class Foo {\n    public int bar() {\n        int x = doSomething();\n        return x;\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public int bar() {\n        return doSomething();\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UnnecessaryCast",
+  "Description" : "Detects casts which could be removed as the operand of the cast is already suitable for the context type. For instance, in the following: ``` Object context = (Comparable) \"o\"; ``` The cast is unnecessary. This is because `String` already is a subtype of both `Comparable` and `Object`.",
+  "RefactoringType" : "Remove Unnecessary Cast",
+  "CodeBefore" : "class Scratch {\n    static void m(Boolean boxedBool, boolean bool, String str, int[] ints) {\n        str = (boolean) boxedBool ? \"a\" : \"b\";\n    }\n}",
+  "CodeAfter" : "class Scratch {\n    static void m(Boolean boxedBool, boolean bool, String str, int[] ints) {\n        str = boxedBool ? \"a\" : \"b\";\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "ForLoopCanBeForeach",
+  "Description" : "Reports loops that can be safely replaced with the foreach syntax. The rule considers loops over lists, arrays and iterators. A loop is safe to replace if it only uses the index variable to access an element of the list or array, only has one update statement, and loops through *every* element of the list or array left to right.",
+  "RefactoringType" : "Loop Replacement with For-Each",
+  "CodeBefore" : "import java.util.List;\npublic class MyClass {\n    void loop(List<String> l) {\n        for (int i = 0; i < l.size(); i++) {\n            System.out.println(l.get(i));\n        }\n    }\n}",
+  "CodeAfter" : "import java.util.List;\npublic class MyClass {\n    void loop(List<String> l) {\n        for (String s : l) {\n            System.out.println(s);\n        }\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UseDiamondOperator",
+  "Description" : "In some cases, explicit type arguments in a constructor call for a generic type may be replaced by diamond type arguments (`<>`), and be inferred by the compiler. This rule recommends that you use diamond type arguments anywhere possible, since it avoids duplication of the type arguments, and makes the code more concise and readable.",
+  "RefactoringType" : "Replace Explicit Type Arguments with Diamond Operator",
+  "CodeBefore" : "public class Generic<T> {\n    <E> Generic<E> method(Generic<E> e) { return e; }\n    public Generic<T> test() {\n        return method(new Generic<T>());\n    }\n}",
+  "CodeAfter" : "public class Generic<T> {\n    <E> Generic<E> method(Generic<E> e) { return e; }\n    public Generic<T> test() {\n        return method(new Generic<>());\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "LooseCoupling",
+  "Description" : "Excessive coupling to implementation types (e.g., `HashSet`) limits your ability to use alternate implementations in the future as requirements change. Whenever available, declare variables and parameters using a more general type (e.g, `Set`).",
+  "RefactoringType" : "Replace Type with Interface",
+  "CodeBefore" : "import java.util.HashSet;\npublic class Foo {\n    HashSet fooSet = new HashSet(); // NOT OK\n}",
+  "CodeAfter" : "import java.util.HashSet;\nimport java.util.Set;\n\npublic class Foo {\n    Set fooSet = new HashSet(); // OK - using interface type\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UnnecessaryCaseChange",
+  "Description" : "Using equalsIgnoreCase() is faster than using toUpperCase/toLowerCase().equals()",
+  "RefactoringType" : "Replace Method with Method Object",
+  "CodeBefore" : "public class Foo {\n    private boolean baz(String buz) {\n        return buz.toUpperCase().equals(\"foo\");\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    private boolean baz(String buz) {\n        return buz.equalsIgnoreCase(\"foo\");\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "SwitchStmtsShouldHaveDefault",
+  "Description" : "Switch statements should be exhaustive, to make their control flow easier to follow. This can be achieved by adding a `default` case, or, if the switch is on an enum type, by ensuring there is one switch branch for each enum constant.",
+  "RefactoringType" : "Add Default Case",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        int x = 2;\n        switch (x) {\n            case 2: int y=8;\n        }\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void bar() {\n        int x = 2;\n        switch (x) {\n            case 2: int y=8;\n            default: // default case added for completeness\n        }\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "SimplifyBooleanReturns",
+  "Description" : "Avoid unnecessary if-then-else statements when returning a boolean. The result of the conditional test can be returned instead.",
+  "RefactoringType" : "Replace Conditional with Boolean Return",
+  "CodeBefore" : "public class SimplifyBooleanReturns {\n    public boolean exists(Object obj) {\n        if (obj instanceof String)\n            return true;\n        return !obj.getClass().equals(String.class);\n    }\n}",
+  "CodeAfter" : "public class SimplifyBooleanReturns {\n    public boolean exists(Object obj) {\n        return obj instanceof String;\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UnusedLocalVariable",
+  "Description" : "Detects when a local variable is declared and/or assigned, but not used. Variables whose name starts with `ignored` or `unused` are filtered out.",
+  "RefactoringType" : "Remove Unused Code",
+  "CodeBefore" : "public class Foo {\n    void foo() {\n        String fr = new String();\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void foo() {\n        // Variable 'fr' removed as it was unused\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "CollapsibleIfStatements",
+  "Description" : "Reports nested 'if' statements that can be merged together by joining their conditions with a boolean `&&` operator in between.",
+  "RefactoringType" : "Consolidate Conditional Expression",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        if (x) {\n            if (y) {\n            }\n        }\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void bar() {\n        if (x && y) {\n        }\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UnnecessaryBoxing",
+  "Description" : "Reports explicit boxing and unboxing conversions that may safely be removed, either because they would be inserted by the compiler automatically, or because they're semantically a noop (eg unboxing a value to rebox it immediately).",
+  "RefactoringType" : "Remove Unnecessary Boxing",
+  "CodeBefore" : "public class Foo {\n    Integer i = new Integer(42);\n}",
+  "CodeAfter" : "public class Foo {\n    Integer i = 42;\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UseStringBufferForStringAppends",
+  "Description" : "The use of the '+=' operator for appending strings causes the JVM to create and use an internal StringBuffer. If a non-trivial number of these concatenations are being used then the explicit use of a StringBuilder or threadsafe StringBuffer is recommended to avoid this.",
+  "RefactoringType" : "Replace String Concatenation with StringBuilder",
+  "CodeBefore" : "public class Foo {\n    public void bar() {\n        String x;\n        x = \"foo\";\n        x += \"bar\" + x;\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public void bar() {\n        String x;\n        x = \"foo\";\n        StringBuilder sb = new StringBuilder(x);\n        sb.append(\"bar\").append(x);\n        x = sb.toString();\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "InefficientEmptyStringCheck",
+  "Description" : "String.trim().length() == 0 (or String.trim().isEmpty() for the same reason) is an inefficient way to check if a String is really blank, as it creates a new String object just to check its size. Consider creating a static function that loops through a string, checking Character.isWhitespace() on each character and returning false if a non-whitespace character is found. A Smarter code to check for an empty string would be:",
+  "RefactoringType" : "Extract Method",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        String foo = \"foo\";\n        boolean b = foo.trim().length() == 0;\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void bar() {\n        String foo = \"foo\";\n        boolean b = isBlank(foo);\n    }\n    \n    private static boolean isBlank(CharSequence cs) {\n        int strLen = cs == null ? 0 : cs.length();\n        if (strLen == 0) {\n            return true;\n        }\n        for (int i = 0; i < strLen; i++) {\n            if (!Character.isWhitespace(cs.charAt(i))) {\n                return false;\n            }\n        }\n        return true;\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UnusedAssignment",
+  "Description" : "Reports assignments to variables that are never used before the variable is overwritten, or goes out of scope. Unused assignments are those for which 1. The variable is never read after the assignment, or 2. The assigned value is always overwritten by other assignments before the next read of the variable.",
+  "RefactoringType" : "Remove Assignment",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        int i=0;\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void bar() {\n        // Variable assignment removed as it was unused\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "ReturnEmptyCollectionRatherThanNull",
+  "Description" : "For any method that returns an collection (such as an array, Collection or Map), it is better to return an empty one rather than a null reference. This removes the need for null checking all results and avoids inadvertent NullPointerExceptions.",
+  "RefactoringType" : "Null Object Pattern",
+  "CodeBefore" : "public class Foo {\n    // Not a good idea...\n    public int []bar()\n    {\n        // ...\n        return null;\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public int[] bar() {\n        // ...\n        return new int[0];\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "LogicInversion",
+  "Description" : "Use opposite operator instead of negating the whole expression with a logic complement operator.",
+  "RefactoringType" : "Boolean Expression Simplification (specifically applying De Morgan's Law)",
+  "CodeBefore" : "public class Foo {\n    public void bar(int a, int b) {\n        if (!(a != b)) { } // violation\n        if (a == b) { } // ok\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public void bar(int a, int b) {\n        if (a == b) { } // fixed: replaced !(a != b) with a == b\n        if (a == b) { } // ok\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "EmptyControlStatement",
+  "Description" : "Reports control statements whose body is empty, as well as empty initializers.",
+  "RefactoringType" : "Remove Dead Code",
+  "CodeBefore" : "public class Foo {\n    {}\n}",
+  "CodeAfter" : "public class Foo {\n    // Empty initializer block removed\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "MissingOverride",
+  "Description" : "Verifies that the `@Override` annotation is present when the `@inheritDoc` javadoc tag is present.",
+  "RefactoringType" : "Add Annotation",
+  "CodeBefore" : "package com.example;\n\nclass Test {\n    public void method() {\n        //noinspection all\n        Runnable t = new Runnable() {\n            public void run() {\n            }\n        };\n    }\n}",
+  "CodeAfter" : "package com.example;\n\nclass Test {\n    public void method() {\n        //noinspection all\n        Runnable t = new Runnable() {\n            @Override\n            public void run() {\n            }\n        };\n    }\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "RuleName" : "SimplifiedTernary",
+  "Description" : "Reports ternary expression with the form `condition ? literalBoolean : foo` or `condition ? foo : literalBoolean`.",
+  "RefactoringType" : "Replace Ternary with Logical Expression",
+  "CodeBefore" : "public class Foo {\n    public boolean test(boolean condition) {\n        return condition ? true : something();\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public boolean test(boolean condition) {\n        return condition || something();\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "GuardLogStatement",
+  "Description" : "Whenever using a log level, one should check if it is actually enabled, or otherwise skip the associate String creation and manipulation, as well as any method calls.",
+  "RefactoringType" : "Introduce Guard Clause",
+  "CodeBefore" : "import java.util.logging.Logger;\n\npublic class Foo {\n\n    private void foo(Logger logger) {\n        logger.fine(\"debug message: \" + this);\n    }\n}",
+  "CodeAfter" : "import java.util.logging.Logger;\n\npublic class Foo {\n\n    private void foo(Logger logger) {\n        if (logger.isLoggable(java.util.logging.Level.FINE)) {\n            logger.fine(\"debug message: \" + this);\n        }\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "AvoidThrowingNullPointerException",
+  "Description" : "Avoid throwing NullPointerExceptions manually. These are confusing because most people will assume that the virtual machine threw it. To avoid a method being called with a null parameter, you may consider using an IllegalArgumentException instead, making it clearly seen as a programmer-initiated exception. However, there are better ways to handle this:",
+  "RefactoringType" : "Replace Exception Type",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        throw new NullPointerException();\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void bar() {\n        throw new IllegalArgumentException(\"Parameter cannot be null\");\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "AvoidCatchingGenericException",
+  "Description" : "Avoid catching generic exceptions such as NullPointerException, RuntimeException, Exception in try-catch block.",
+  "RefactoringType" : "Remove Unnecessary Exception Handling",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        try {\n        } catch (NullPointerException | RuntimeException | FooException e) {\n        }\n    }\n}\nclass FooException extends Exception {}",
+  "CodeAfter" : "public class Foo {\n    void bar() {\n        try {\n            // Business logic here\n        } catch (FooException e) {\n            // Handle specific exception\n        }\n    }\n}\nclass FooException extends Exception {}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "NullAssignment",
+  "Description" : "Assigning a \"null\" to a variable (outside of its declaration) is usually bad form. Sometimes, this type of assignment is an indication that the programmer doesn't completely understand what is going on in the code.",
+  "RefactoringType" : "Simplify Conditional Expression",
+  "CodeBefore" : "public class NullAssignmentTernary {\n    public void bar(String a, String b, String c) {\n        String x;\n        x = a != null ? a : b != null ? b : c != null ? c : null;\n    }\n}",
+  "CodeAfter" : "public class NullAssignmentTernary {\n    public void bar(String a, String b, String c) {\n        String x;\n        x = a != null ? a : b != null ? b : c;\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "AvoidArrayLoops",
+  "Description" : "Instead of manually copying data between two arrays, use the more efficient `Arrays.copyOf` or `System.arraycopy` method instead.",
+  "RefactoringType" : "Replace Loop with Library Method",
+  "CodeBefore" : "public class Foo {\n    public void bar(int[] b) {\n        int[] a = new int[10];\n        for (int i=0;i<10;i++) {\n            a[i] = b[i];\n        }\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public void bar(int[] b) {\n        int[] a = new int[10];\n        System.arraycopy(b, 0, a, 0, 10);\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "CompareObjectsWithEquals",
+  "Description" : "Use `equals()` to compare object references; avoid comparing them with `==`.",
+  "RefactoringType" : "Replace Operator with Method",
+  "CodeBefore" : "public class Foo {\n    boolean bar(String a, String b) {\n        return a == b;\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    boolean bar(String a, String b) {\n        return a == null ? b == null : a.equals(b);\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "ConsecutiveAppendsShouldReuse",
+  "Description" : "Consecutive calls to StringBuffer/StringBuilder .append should be chained, reusing the target object. This can improve the performance by producing a smaller bytecode, reducing overhead and improving inlining. A complete analysis can be found here",
+  "RefactoringType" : "Method Chaining",
+  "CodeBefore" : "public class Foo {\n    public void foo() {\n        final StringBuffer stringBuffer = new StringBuffer().append(\"agrego \").append(\"un \");\n        stringBuffer.append(\"string \");\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public void foo() {\n        final StringBuffer stringBuffer = new StringBuffer().append(\"agrego \").append(\"un \").append(\"string \");\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "EmptyCatchBlock",
+  "Description" : "Empty Catch Block finds instances where an exception is caught, but nothing is done. In most circumstances, this swallows an exception which should either be acted on or reported.",
+  "RefactoringType" : "Add Exception Handling",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        try {} catch (Exception e) {}\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    void bar() {\n        try {} catch (Exception e) {\n            // Log the exception\n            System.err.println(\"Exception caught: \" + e.getMessage());\n        }\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UseProperClassLoader",
+  "Description" : "In J2EE, the getClassLoader() method might not work as expected. Use Thread.currentThread().getContextClassLoader() instead.",
+  "RefactoringType" : "Method Call Replacement",
+  "CodeBefore" : "public class Foo {\n    void bar() { ClassLoader cl = Foo.class.getClassLoader(); }\n}",
+  "CodeAfter" : "public class Foo {\n    void bar() { ClassLoader cl = Thread.currentThread().getContextClassLoader(); }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "PreserveStackTrace",
+  "Description" : "Reports exceptions that are thrown from within a catch block, yet don't refer to the exception parameter declared by that catch block. The stack trace of the original exception could be lost, which makes the thrown exception less informative.",
+  "RefactoringType" : "Preserve Exception Context",
+  "CodeBefore" : "public class Foo {\n    public void bar() {\n        try {\n        } catch (Exception excep) {\n            throw new IllegalStateException();\n        }\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public void bar() {\n        try {\n        } catch (Exception excep) {\n            throw new IllegalStateException(excep);\n        }\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "AvoidDuplicateLiterals",
+  "Description" : "Code containing duplicate String literals can usually be improved by declaring the String as a constant field.",
+  "RefactoringType" : "Extract Constant",
+  "CodeBefore" : "public class Foo {\n    String[] FOO = {\"foo\", \"foo\", \"foo\", \"foo\", \"foo\", \"foo\", \"foo\", \"foo\", \"foo\"};\n}",
+  "CodeAfter" : "public class Foo {\n    private static final String FOO_VALUE = \"foo\";\n    String[] FOO = {FOO_VALUE, FOO_VALUE, FOO_VALUE, FOO_VALUE, FOO_VALUE, FOO_VALUE, FOO_VALUE, FOO_VALUE, FOO_VALUE};\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UnnecessaryFullyQualifiedName",
+  "Description" : "Import statements allow the use of non-fully qualified names. The use of a fully qualified name which is covered by an import statement is redundant. Consider using the non-fully qualified name.",
+  "RefactoringType" : "Remove Unnecessary Code",
+  "CodeBefore" : "import java.util.List;\npublic class Foo implements java.util.List {\n}",
+  "CodeAfter" : "import java.util.List;\npublic class Foo implements List {\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "RightCurly",
+  "Description" : "Checks the placement of right curly braces (`'}'`) for code blocks. This check supports if-else, try-catch-finally blocks, switch statements, switch cases, while-loops, for-loops, method definitions, class definitions, constructor definitions, instance, static initialization blocks, annotation definitions and enum definitions. For right curly brace of expression blocks of arrays, lambdas and class instances please follow issue #5945. For right curly brace of enum constant please follow issue #7519.",
+  "RefactoringType" : "Code Formatting",
+  "CodeBefore" : "public class Example {\n    public void test() {\n        boolean foo = false;\n        if (foo) {\n            bar();\n        }\n        else {\n              baz();\n        }\n    }\n}",
+  "CodeAfter" : "public class Example {\n    public void test() {\n        boolean foo = false;\n        if (foo) {\n            bar();\n        } else {\n            baz();\n        }\n    }\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "RuleName" : "AvoidThrowingRawExceptionTypes",
+  "Description" : "Avoid throwing certain exception types. Rather than throw a raw RuntimeException, Throwable, Exception, or Error, use a subclassed exception or error instead.",
+  "RefactoringType" : "Replace Exception with Specific Checked/Unchecked Exception",
+  "CodeBefore" : "import java.io.IOException;\n\npublic class Foo {\n\n    public void bar() {\n        throw new Exception();\n    }\n}",
+  "CodeAfter" : "import java.io.IOException;\n\npublic class Foo {\n\n    public void bar() {\n        throw new IllegalStateException(\"Invalid state encountered\");\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "OptimizableToArrayCall",
+  "Description" : "Calls to a collection's `toArray(E[])` method should specify a target array of zero size. This allows the JVM to optimize the memory allocation and copying as much as possible.",
+  "RefactoringType" : "Performance Optimization",
+  "CodeBefore" : "import java.util.List;\npublic class Foo {\n    {\n        List<Foo> x;\n        x.toArray(new Foo[x.size()]);\n    }\n}",
+  "CodeAfter" : "import java.util.List;\npublic class Foo {\n    {\n        List<Foo> x;\n        x.toArray(new Foo[0]);\n    }\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+}, {
+  "RuleName" : "UseCollectionIsEmpty",
+  "Description" : "The isEmpty() method on java.util.Collection is provided to determine if a collection has any elements. Comparing the value of size() to 0 does not convey intent as well as the isEmpty() method.",
+  "RefactoringType" : "Replace Method with Method Object",
+  "CodeBefore" : "import java.util.List;\n\npublic record CollectionRecord(List<String> theList) {\n    public CollectionRecord {\n        if (theList.size() == 0) throw new IllegalArgumentException(\"empty list\");\n        if (theList.isEmpty()) throw new IllegalArgumentException(\"empty list\");\n    }\n}",
+  "CodeAfter" : "import java.util.List;\n\npublic record CollectionRecord(List<String> theList) {\n    public CollectionRecord {\n        if (theList.isEmpty()) throw new IllegalArgumentException(\"empty list\");\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "ConsecutiveLiteralAppends",
+  "Description" : "Consecutively calling StringBuffer/StringBuilder.append(...) with literals should be avoided. Since the literals are constants, they can already be combined into a single String literal and this String can be appended in a single method call.",
+  "RefactoringType" : "String Concatenation",
+  "CodeBefore" : "public class Foo {\n    public void bar() {\n        StringBuilder s = new StringBuilder();\n        s.append(1);\n        s.append(2);\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    public void bar() {\n        StringBuilder s = new StringBuilder();\n        s.append(\"12\");\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "AvoidPrintStackTrace",
+  "Description" : "Avoid printStackTrace(); use a logger call instead.",
+  "RefactoringType" : "Replace Method with Method Object",
+  "CodeBefore" : "public class Foo {\n    void bar() {\n        try {\n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n    }\n}",
+  "CodeAfter" : "public class Foo {\n    private static final Logger LOG = LoggerFactory.getLogger(Foo.class);\n    \n    void bar() {\n        try {\n        } catch (Exception e) {\n            LOG.error(\"An error occurred\", e);\n        }\n    }\n}",
+  "IsCorrect" : false,
+  "IsResolved" : true
+}, {
+  "RuleName" : "SimplifyBooleanReturn",
+  "Description" : "Checks for over-complicated boolean return or yield statements. For example the following code",
+  "RefactoringType" : "Replace Conditional with Direct Return",
+  "CodeBefore" : "public class A {\n    boolean ifNoElse() {\n        if (isOddMillis()) {\n            return true;\n        }\n        return false;\n    }\n\n    static boolean isOddMillis() {\n        boolean even = System.currentTimeMillis() % 2 == 0;\n        if (even == true) {\n            return false;\n        }\n        else {\n            return true;\n        }\n    }\n}",
+  "CodeAfter" : "public class A {\n    boolean ifNoElse() {\n        return isOddMillis();\n    }\n\n    static boolean isOddMillis() {\n        boolean even = System.currentTimeMillis() % 2 == 0;\n        return !(even == true);\n    }\n}",
+  "IsCorrect" : true,
+  "IsResolved" : true
+} ]
